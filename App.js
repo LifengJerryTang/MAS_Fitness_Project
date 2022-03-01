@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Workout"
+        <Stack.Navigator initialRouteName="Workouts"
                          screenOptions={{
                            header: () => null
                          }}
