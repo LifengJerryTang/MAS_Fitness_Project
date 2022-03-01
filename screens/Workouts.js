@@ -1,19 +1,34 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { VStack, Center, NativeBaseProvider } from "native-base";
+import Card from '../components/ui/Card'
+import {getDataFromDatabase} from "../firebase/FirebaseAPI";
 
-const WorkoutList = () => {
+const WorkoutList = (props) => {
     return (<VStack space={4} alignItems="center">
-                <Center w="64" h="20" bg="indigo.300" rounded="md" shadow={3} />
-                <Center w="64" h="20" bg="indigo.500" rounded="md" shadow={3} />
-                <Center w="64" h="20" bg="indigo.700" rounded="md" shadow={3} />
+                {props.workouts.map((workout) => {
+                    return <Card
+                                imageUrl={workout.imageUrl}
+                                title={workout.name}
+                                description={workout.description}/>
+                })}
+                <Card/>
             </VStack>);
 }
 
 const Workouts = () => {
+
+    const [workouts, setWorkouts] = useState([]);
+    useEffect(() => {
+      getDataFromDatabase("/workouts").then((allWorkouts) => {
+          console.log(allWorkouts)
+          setWorkouts(allWorkouts);
+      })
+    }, []);
+
     return (
         <NativeBaseProvider>
             <Center flex={1} px="3">
-                <WorkoutList/>
+                <WorkoutList workouts={workouts}/>
             </Center>
         </NativeBaseProvider>
     );
