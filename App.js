@@ -1,12 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
+import Workouts from "./screens/Workouts";
+import Pet from "./screens/Pet";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Workout"
+                         screenOptions={{
+                           header: () => null
+                         }}
+        >
+          <Stack.Screen
+              name="Workouts"
+              component={Workouts}
+          />
+          <Stack.Screen
+              name="Pet"
+              component={Pet}/>
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
