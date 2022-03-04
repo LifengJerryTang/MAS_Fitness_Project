@@ -1,9 +1,15 @@
 import React, {useEffect, useState} from "react";
 import { VStack, Center, NativeBaseProvider, ScrollView, Text } from "native-base";
-import Card from '../components/ui/Card'
-import {getDataFromDatabase} from "../firebase/FirebaseAPI";
+import { TouchableOpacity } from 'react-native';
+import Card from '../../components/ui/Card'
+import {getDataFromDatabase} from "../../firebase/FirebaseAPI";
 
 const WorkoutList = (props) => {
+
+    const goToWorkout = (workoutName) => {
+        props.navigation.navigate('SingleWorkout', {workoutName})
+    }
+
     return (
             <ScrollView mt={75}>
                 <VStack space={4} alignItems="center">
@@ -11,22 +17,27 @@ const WorkoutList = (props) => {
                         Workouts
                     </Text>
                     {props.workouts.map((workout) => {
-                        return <Card
-                            imageUrl={workout.imageUrl}
-                            title={workout.name}
-                            description={workout.description}/>
+                        return <TouchableOpacity key={workout.name}
+                                onPress={() => goToWorkout(workout.name)}
+                                >
+                                    <Card
+                                        imageUrl={workout.imageUrl}
+                                        title={workout.name}
+                                        description={workout.description}/>
+                                </TouchableOpacity>
+
                     })}
                 </VStack>
             </ScrollView>
          );
 }
 
-const Workouts = () => {
+const Workouts = (props) => {
 
     const [workouts, setWorkouts] = useState([]);
+
     useEffect(() => {
       getDataFromDatabase("/workouts").then((allWorkouts) => {
-          console.log(allWorkouts)
           setWorkouts(allWorkouts);
       })
     }, []);
@@ -34,7 +45,7 @@ const Workouts = () => {
     return (
         <NativeBaseProvider>
             <Center flex={1} px="3">
-                <WorkoutList workouts={workouts}/>
+                <WorkoutList workouts={workouts} navigation={props.navigation}/>
             </Center>
         </NativeBaseProvider>
     );

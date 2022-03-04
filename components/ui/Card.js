@@ -24,23 +24,19 @@ const Card = (props) => {
                     <Heading size="md" ml="-1">
                         {props.title}
                     </Heading>
-                    <Text fontSize="xs" _light={{
-                        color: "violet.500"
-                    }} _dark={{
-                        color: "violet.400"
-                    }} fontWeight="500" ml="-0.5" mt="-1">
-                        {props.title}
-                    </Text>
+
                 </Stack>
                 <Text fontWeight="400">
                     {props.description}
                 </Text>
                 <HStack alignItems="center" space={4} justifyContent="space-between">
                     <HStack alignItems="center">
-                        <Text color="coolGray.600" _dark={{
-                            color: "warmGray.200"
-                        }} fontWeight="400">
-                            {props.otherInfo}
+                        <Text fontSize="xs" _light={{
+                            color: "violet.500"
+                        }} _dark={{
+                            color: "violet.400"
+                        }} fontWeight="500" ml="-0.5" mt="-1">
+                            Tap to get started!
                         </Text>
                     </HStack>
                 </HStack>
