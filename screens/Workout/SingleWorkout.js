@@ -5,20 +5,24 @@ import {StyleSheet, ImageBackground} from "react-native";
 
 const SingleWorkout = (props) => {
 
-    const [time, setTime] = useState({s:0, m:0, h:0});
+    const [time, setTime] = useState({sec:0, min:0, hour:0});
     const [workoutName] = useState(props.route.params.workoutName);
     const [interv, setInterv] = useState();
-    const [timerStarted, setTimerStarted] = useState(false);
+    const [timerStarted, setTimerStarted] = useState(true);
 
-    const start = () => {
-        run();
+    useEffect(() => {
+        startTimer();
+    }, [])
+
+    const startTimer = () => {
+        runTimer();
         setTimerStarted(true);
-        setInterv(setInterval(run, 1000));
+        setInterv(setInterval(runTimer, 1000));
     };
 
-    let updatedS = time.s, updatedM = time.m, updatedH = time.h;
+    let updatedS = time.sec, updatedM = time.min, updatedH = time.hour;
 
-    const run = () => {
+    const runTimer = () => {
         if(updatedM === 60){
             updatedH++;
             updatedM = 0;
@@ -29,10 +33,11 @@ const SingleWorkout = (props) => {
         }
 
         updatedS++;
-        return setTime({s:updatedS, m:updatedM, h:updatedH});
+
+        return setTime({sec:updatedS, min:updatedM, hour:updatedH});
     };
 
-    const stop = () => {
+    const stopTimer = () => {
         clearInterval(interv);
         setTimerStarted(false)
     };
@@ -50,12 +55,12 @@ const SingleWorkout = (props) => {
                     </Text>
 
                     <Text bold fontSize="6xl">
-                        {`${time.h}:${time.m}:${time.s}`}
+                        {`${time.hour}:${time.min}:${time.sec}`}
                     </Text>
 
                     {timerStarted ?
                         <IconButton
-                            onPress={stop}
+                            onPress={stopTimer}
                             p={30}
                             borderRadius="full"
                             size={"lg"}
@@ -67,7 +72,7 @@ const SingleWorkout = (props) => {
                         <HStack space={5}>
                             <IconButton
                                 key={"start button"}
-                                onPress={start}
+                                onPress={startTimer}
                                 borderRadius="full"
                                 p={30}
                                 size={"lg"}

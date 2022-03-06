@@ -11,7 +11,7 @@ const WorkoutList = (props) => {
     }
 
     return (
-            <ScrollView mt={75}>
+            <ScrollView mt={50}>
                 <VStack space={4} alignItems="center">
                     <Text bold fontSize="xl">
                         Workouts
