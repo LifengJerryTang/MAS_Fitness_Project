@@ -9,7 +9,7 @@ const SingleWorkout = (props) => {
     const [time, setTime] = useState({sec:0, min:0, hour:0});
     const [workoutName] = useState(props.route.params.workoutName);
     const [workoutGif] = useState(props.route.params.workoutGif);
-    const [interv, setInterv] = useState(null);
+    const [interv, setInterv] = useState(0);
     const [timerStarted, setTimerStarted] = useState(true);
 
     useEffect(() => {
@@ -59,13 +59,17 @@ const SingleWorkout = (props) => {
     return (
         <NativeBaseProvider>
             <Center flex={1} px="3">
-                <VStack space={10} alignItems="center">
-                    <Text fontSize="2xl">
+                <VStack space={5} alignItems="center">
+                    <Image
+                        style={{width: 410, height: 300}}
+                        source={{uri: `${workoutGif}`}} />
+                    <Text fontSize="2xl" bold color={"primary"}
+                          _light={{
+                              color: "violet.500"
+                          }} _dark={{
+                        color: "violet.400"}}>
                         {workoutName}
                     </Text>
-                    <Image
-                        style={{width: 300, height: 200}}
-                        source={{uri: `${workoutGif}`}} />
                     <Text bold fontSize="6xl">
                         {displayTimer()}
                     </Text>
