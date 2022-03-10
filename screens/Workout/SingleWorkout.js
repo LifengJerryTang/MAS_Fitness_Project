@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Center, IconButton, VStack, NativeBaseProvider, Text, Button, HStack} from "native-base";
 import { AntDesign } from "@expo/vector-icons";
-import {StyleSheet, ImageBackground} from "react-native";
+import {StyleSheet, Image, View} from "react-native";
+import LottieView from "lottie-react-native";
 
 const SingleWorkout = (props) => {
 
     const [time, setTime] = useState({sec:0, min:0, hour:0});
     const [workoutName] = useState(props.route.params.workoutName);
-    const [interv, setInterv] = useState();
+    const [workoutGif] = useState(props.route.params.workoutGif);
+    const [interv, setInterv] = useState(null);
     const [timerStarted, setTimerStarted] = useState(true);
 
     useEffect(() => {
@@ -46,16 +48,26 @@ const SingleWorkout = (props) => {
 
     }
 
+    const makeMeTwoDigits = (n) => {
+        return (n < 10 ? "0" : "") + n;
+    }
+
+    const displayTimer = () => {
+        return `${makeMeTwoDigits(time.hour)}:${makeMeTwoDigits(time.min)}:${makeMeTwoDigits(time.sec)}`;
+    }
+
     return (
         <NativeBaseProvider>
             <Center flex={1} px="3">
                 <VStack space={10} alignItems="center">
-                    <Text fontSize="5xl">
+                    <Text fontSize="2xl">
                         {workoutName}
                     </Text>
-
+                    <Image
+                        style={{width: 300, height: 200}}
+                        source={{uri: `${workoutGif}`}} />
                     <Text bold fontSize="6xl">
-                        {`${time.hour}:${time.min}:${time.sec}`}
+                        {displayTimer()}
                     </Text>
 
                     {timerStarted ?

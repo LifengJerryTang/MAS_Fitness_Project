@@ -6,8 +6,8 @@ import {getDataFromDatabase} from "../../firebase/FirebaseAPI";
 
 const WorkoutList = (props) => {
 
-    const goToWorkout = (workoutName) => {
-        props.navigation.navigate('SingleWorkout', {workoutName})
+    const goToWorkout = (workoutName, workoutGif) => {
+        props.navigation.navigate('SingleWorkout', {workoutName, workoutGif})
     }
 
     return (
@@ -18,7 +18,7 @@ const WorkoutList = (props) => {
                     </Text>
                     {props.workouts.map((workout) => {
                         return <TouchableOpacity key={workout.name}
-                                onPress={() => goToWorkout(workout.name)}
+                                onPress={() => goToWorkout(workout.name, workout.gif)}
                                 >
                                     <Card
                                         imageUrl={workout.imageUrl}
