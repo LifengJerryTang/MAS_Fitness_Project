@@ -4,8 +4,6 @@ import { Input, Box } from 'native-base';
 import { Platform } from 'react-native';
 
 export default class FloatingLabelInput extends Component {
-  animatedIsFocused
-
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +18,7 @@ export default class FloatingLabelInput extends Component {
   handleFocus = () => this.setState({ isFocused: true });
   handleBlur = () => this.setState({ isFocused: false });
 
-  componentDidUpdate() {
+  componentWillUpdate(nextProps, nextState, nextContext) {
     Animated.timing(this._animatedIsFocused, {
       duration: 200,
       useNativeDriver: false,
@@ -28,10 +26,11 @@ export default class FloatingLabelInput extends Component {
     }).start();
   }
 
+
   render() {
     const { label, ...props } = this.props;
 
-    const lableContainerStyles = {
+    const labelContainerStyles = {
       position: 'absolute',
       left: 16,
       top: this._animatedIsFocused.interpolate({
@@ -70,7 +69,7 @@ export default class FloatingLabelInput extends Component {
 
     return (
       <Box w={this.props.containerWidth}>
-        <Animated.View pointerEvents="none" style={lableContainerStyles}>
+        <Animated.View pointerEvents="none" style={labelContainerStyles}>
           <Animated.Text
             style={
               Platform.OS === 'android' ? AndroidlabelStyle : IOSlabelStyle
