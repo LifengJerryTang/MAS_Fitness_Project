@@ -22,7 +22,11 @@ export default function SignUp(props) {
     const [loading, setLoading] = useState(false);
 
     if (loading) {
-        return <Loading/>
+        return (
+            <NativeBaseProvider>
+                <Loading/>
+            </NativeBaseProvider>
+        )
     }
 
   return (
@@ -68,26 +72,13 @@ export default function SignUp(props) {
           <Hidden from="md">
             <VStack px="4" mt="4" mb="5" space="9">
               <HStack space="2" alignItems="center">
-                <IconButton
-                  pl="0"
-                  variant="unstyled"
-                  onPress={() => {}}
-                  icon={
-                    <Icon
-                      size="6"
-                      as={AntDesign}
-                      name="arrowleft"
-                      color="coolGray.50"
-                    />
-                  }
-                />
                 <Text color="coolGray.50" fontSize="lg">
                   Sign Up
                 </Text>
               </HStack>
               <VStack space="2">
                 <Text fontSize="3xl" fontWeight="bold" color="coolGray.50">
-                  Welcome
+                  Welcome!
                 </Text>
                 <Text
                   fontSize="md"

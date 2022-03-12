@@ -17,12 +17,53 @@ import FloatingLabelInput from "../../components/ui/FloatingLabelInput";
 import {Entypo} from "@expo/vector-icons";
 import IconFacebook from "../../components/ui/icons/IconFacebook";
 import IconGoogle from "../../components/ui/icons/IconGoogle";
+import {signIn} from "../../firebase/FirebaseAPI";
+import AlertBox from "../../components/ui/AlertBox";
 
-export default function SignInForm({ props }) {
+export default function SignInForm({ props, setLoading }) {
 
-    const [text, setText] = useState("");
-    const [pass, setPass] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [showPass, setShowPass] = React.useState(false);
+    const [signInError, setSignInError] = useState("");
+
+    const inputValid = () => {
+        if (!email) {
+            setSignInError("Please enter your email!");
+            return false;
+        } else if (!password) {
+            setSignInError("Password enter your password!")
+            return false;
+        } else {
+            setSignInError("");
+        }
+
+        return true;
+
+    }
+
+    const userSignIn = () => {
+        if (!inputValid()) {
+            return;
+        }
+
+        setLoading(true);
+
+        signIn(email, password).then(user => {
+            setLoading(false);
+            props.navigation.navigate("BottomTabNavScreens", {user});
+        }).catch(error => {
+            setLoading(false);
+            setSignInError(error.message);
+        })
+    }
+
+    const displayError = () => {
+        if (signInError) {
+            return <AlertBox status={"error"} title={"ERROR!"} message={signInError}/>
+        }
+    }
+
     return (
         <KeyboardAwareScrollView
             contentContainerStyle={{
@@ -71,14 +112,15 @@ export default function SignInForm({ props }) {
                                     md: "4",
                                 }}
                             >
+                                {displayError()}
                                 <FloatingLabelInput
                                     isRequired
                                     label="Email"
                                     labelColor="#9ca3af"
                                     labelBGColor={useColorModeValue("#fff", "#1f2937")}
                                     borderRadius="4"
-                                    defaultValue={text}
-                                    onChangeText={(txt) => setText(txt)}
+                                    defaultValue={email}
+                                    onChangeText={(txt) => setEmail(txt)}
                                     _text={{
                                         fontSize: "sm",
                                         fontWeight: "medium",
@@ -97,8 +139,8 @@ export default function SignInForm({ props }) {
                                     borderRadius="4"
                                     labelColor="#9ca3af"
                                     labelBGColor={useColorModeValue("#fff", "#1f2937")}
-                                    defaultValue={pass}
-                                    onChangeText={(txt) => setPass(txt)}
+                                    defaultValue={password}
+                                    onChangeText={(txt) => setPassword(txt)}
                                     InputRightElement={
                                         <IconButton
                                             variant="unstyled"
@@ -182,7 +224,7 @@ export default function SignInForm({ props }) {
                                     bg: "primary.700",
                                 }}
                                 onPress={() => {
-                                    props.navigation.navigate("OTP");
+                                    userSignIn()
                                 }}
                             >
                                 SIGN IN

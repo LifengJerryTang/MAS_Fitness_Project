@@ -58,16 +58,21 @@ const SingleWorkout = (props) => {
 
     return (
         <NativeBaseProvider>
-            <Center flex={1} px="3">
-                <VStack space={5} alignItems="center">
+            <Center flex={1} px="3"
+                    _light={{
+                        bg: "white",
+                    }}
+            >
+                <VStack space={5} alignItems="center"
+                >
                     <Image
                         style={{width: 410, height: 300}}
                         source={{uri: `${workoutGif}`}} />
                     <Text fontSize="2xl" bold color={"primary"}
                           _light={{
-                              color: "violet.500"
+                              color: "primary.300"
                           }} _dark={{
-                        color: "violet.400"}}>
+                        color: "coolGray.400"}}>
                         {workoutName}
                     </Text>
                     <Text bold fontSize="6xl">
@@ -80,7 +85,7 @@ const SingleWorkout = (props) => {
                             p={30}
                             borderRadius="full"
                             size={"lg"}
-                            colorScheme="indigo" key={"solid"} variant={"solid"} _icon={{
+                            colorScheme="primary" key={"solid"} variant={"solid"} _icon={{
                             as: AntDesign,
                             name: "pause"
                         }} />
@@ -92,7 +97,7 @@ const SingleWorkout = (props) => {
                                 borderRadius="full"
                                 p={30}
                                 size={"lg"}
-                                colorScheme="indigo" key={"solid"} variant={"solid"} _icon={{
+                                colorScheme="primary" key={"solid"} variant={"solid"} _icon={{
                                 as: AntDesign,
                                 name: "play"
                             }} />

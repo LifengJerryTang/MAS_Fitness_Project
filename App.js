@@ -8,6 +8,7 @@ import SingleWorkout from "./screens/Workout/SingleWorkout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SignIn from "./screens/SignIn/SignIn"
 import SignUp from "./screens/SignUp/SignUp"
+import Product from "./screens/Product";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,6 +56,10 @@ export default function App() {
               <Stack.Screen
                   name="SignUp"
                   component={SignUp}
+              />
+              <Stack.Screen
+                  name="Product"
+                  component={Product}
               />
               <Stack.Screen
                   name="BottomTabNavScreens"

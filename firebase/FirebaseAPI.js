@@ -61,7 +61,7 @@ export const signup = (email, password, firstName, lastName) => {
         }
 
         //Saves to the database first using user's uid as the path
-        saveToDatabase(`users/${userCredential.user.uid}`, newUser);
+        saveToDatabaseOverwrite(`users/${userCredential.user.uid}`, newUser);
         return newUser;
 
     }).catch((error) => {
@@ -82,7 +82,7 @@ export const signup = (email, password, firstName, lastName) => {
  * @param password entered password
  * @returns {Promise<UserCredential>}
  */
-export const loginByEmailAndPassword = (email, password) => {
+export const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             let userPath =  'users/' + auth.currentUser.uid;

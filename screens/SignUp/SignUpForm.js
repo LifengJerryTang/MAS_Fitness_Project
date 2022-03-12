@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {
     Button, Center,
@@ -19,7 +19,7 @@ import IconFacebook from "../../components/ui/icons/IconFacebook";
 import IconGoogle from "../../components/ui/icons/IconGoogle";
 import {signup} from "../../firebase/FirebaseAPI";
 import AlertBox from "../../components/ui/AlertBox";
-import Loading from "../../components/ui/Loading";
+import { useScrollToTop } from '@react-navigation/native';
 
 export default function SignUpForm({ props, setLoading }) {
     const [email, setEmail] = useState("");
@@ -33,22 +33,36 @@ export default function SignUpForm({ props, setLoading }) {
 
     const inputValid = () => {
         if (!firstName) {
-            setSignupError("Please enter your firstName!");
+            setSignupError("Please enter your first name!");
             return false
         } else if (!lastName) {
-            setSignupError("Please enter your lastName!");
+            setSignupError("Please enter your last name!");
             return false;
-        } else if (!email) {
-            setSignupError("Email cannot be empty!");
+        } else if (!checkEmailValidity(email)) {
+            setSignupError("Please enter a valid email!");
             return false;
-        } else if (!password) {
-            setSignupError("Password cannot be empty!")
+        } else if (password.length < 8) {
+            setSignupError("Password must be at least 8 characters!")
             return false;
+        } else if (confirmPass !== password) {
+            setSignupError("Your passwords must match!")
+            return false;
+        } else {
+            setSignupError("");
         }
 
         return true;
 
     }
+
+    const checkEmailValidity = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    }
+
 
     const userSignup = () => {
         if (!inputValid()) {
@@ -56,9 +70,8 @@ export default function SignUpForm({ props, setLoading }) {
         }
         setLoading(true);
         signup(email, password, firstName, lastName).then(user => {
-            clearInputs();
             setLoading(false);
-            props.navigation.navigate("/Workouts", {user});
+            props.navigation.navigate("BottomTabNavScreens", {user});
         }).catch(error => {
             setLoading(false);
             setSignupError(error.message);
@@ -70,13 +83,6 @@ export default function SignUpForm({ props, setLoading }) {
             return <AlertBox status={"error"} title={"ERROR!"} message={signupError}/>
         }
     }
-    const clearInputs = () => {
-        setConfirmPass("");
-        setEmail("");
-        setPassword("");
-        setFirstName("");
-        setLastName("");
-    }
 
     return (
         <KeyboardAwareScrollView
@@ -87,6 +93,9 @@ export default function SignUpForm({ props, setLoading }) {
                 flex: 1,
             }}
         >
+            <Text>
+                {email}
+            </Text>
             <VStack
                 flex="1"
                 px="6"

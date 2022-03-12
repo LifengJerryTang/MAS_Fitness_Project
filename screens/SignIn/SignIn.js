@@ -3,20 +3,29 @@ import {
   HStack,
   VStack,
   Text,
-  Image,
-  IconButton,
-  Icon,
   Center,
   Hidden,
   StatusBar,
   Stack,
   Box,
 } from "native-base";
-import { AntDesign } from "@expo/vector-icons";
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import SignInForm from "./SignInForm";
+import Loading from "../../components/ui/Loading";
+import {signIn} from "../../firebase/FirebaseAPI";
 
 export default function SignIn(props) {
+
+  const [loading, setLoading] = useState(false);
+
+  if (loading) {
+    return (
+        <NativeBaseProvider>
+          <Loading/>
+        </NativeBaseProvider>
+    )
+  }
+
   return (
     <NativeBaseProvider>
       <StatusBar
@@ -60,19 +69,6 @@ export default function SignIn(props) {
           <Hidden from="md">
             <VStack px="4" mt="4" mb="5" space="9">
               <HStack space="2" alignItems="center">
-                <IconButton
-                  variant="unstyled"
-                  pl="0"
-                  onPress={() => {}}
-                  icon={
-                    <Icon
-                      size="6"
-                      as={AntDesign}
-                      name="arrowleft"
-                      color="coolGray.50"
-                    />
-                  }
-                />
                 <Text color="coolGray.50" fontSize="lg">
                   Sign In
                 </Text>
@@ -111,7 +107,7 @@ export default function SignIn(props) {
             >
             </Center>
           </Hidden>
-          <SignInForm props={props} />
+          <SignInForm props={props} setLoading={setLoading}/>
         </Stack>
       </Center>
     </NativeBaseProvider>

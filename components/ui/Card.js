@@ -3,7 +3,7 @@ import { Box, Heading, AspectRatio, Image, Text, Center, HStack, Stack, NativeBa
 
 const Card = (props) => {
     return <Box alignItems="center">
-        <Box maxW="80" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
+        <Box maxW="96%" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
             borderColor: "coolGray.600",
             backgroundColor: "gray.700"
         }} _web={{
@@ -32,9 +32,9 @@ const Card = (props) => {
                 <HStack alignItems="center" space={4} justifyContent="space-between">
                     <HStack alignItems="center">
                         <Text fontSize="xs" _light={{
-                            color: "violet.500"
+                            color: "primary.300"
                         }} _dark={{
-                            color: "violet.400"
+                            color: "coolGray.400"
                         }} fontWeight="500" ml="-0.5" mt="-1">
                             Tap to get started!
                         </Text>
