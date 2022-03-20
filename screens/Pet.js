@@ -63,7 +63,7 @@ const Pet = () => {
                     <Center>
                         <Image
                             style={{width: 410, height: 300}}
-                            source={{uri: `https://c.tenor.com/b1DVdUGztTIAAAAC/cartoon-dog.gif`}} />
+                            source={{uri: `https://c.tenor.com/b1DVdUGztTIAAAAC/cartoon-dog.gif`}}/>
                     </Center>
                     <Center>
                         <Text fontSize={'xl'} textAlign={"center"}>

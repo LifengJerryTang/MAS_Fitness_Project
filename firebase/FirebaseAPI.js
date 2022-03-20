@@ -123,3 +123,7 @@ export const signIn = (email, password) => {
 export const alreadySignedIn = () => {
     return auth.currentUser !== null
 }
+
+export const getCurrUserId = () => {
+    return auth.currentUser.uid;
+}

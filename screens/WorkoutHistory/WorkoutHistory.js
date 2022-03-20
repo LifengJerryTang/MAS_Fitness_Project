@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Box, HStack, Icon, Text, VStack, StatusBar, Avatar, Image, Input, useColorMode, ScrollView,
   Pressable, Center, Divider, Button, IconButton, Stack, Link, Hidden, Menu, Container, View, Card,
@@ -10,6 +10,7 @@ import {
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import {TouchableOpacity} from "react-native";
+import {getCurrUserId, getDataFromDatabase} from "../../firebase/FirebaseAPI";
 
 
 
@@ -101,51 +102,38 @@ export default function WorkoutHistory(props) {
   // const router = useRouter(); //use incase of Nextjs
   const [tabName, setTabName] = React.useState("Reviews");
   const { colorMode } = useColorMode();
-
-  const [historyItems, setHistoryItems] = useState([]);
+  const [historyItems, setHistoryItems] = useState({});
 
   const [items, setItems] = useState({});
 
-  const timeToString = (time) => {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-  };
+  useEffect(() => {
+   loadHistoryData().then();
+  }, [])
 
-  const loadItems = (day) => {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = timeToString(time);
-        if (!items[strTime]) {
-          items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 3 + 1);
-          for (let j = 0; j < numItems; j++) {
-            items[strTime].push({
-              name: 'Item for ' + strTime + ' #' + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-            });
-          }
-        }
-      }
-      const newItems = {};
-      Object.keys(items).forEach((key) => {
-        newItems[key] = items[key];
-      });
-      setItems(newItems);
-    }, 1000);
-  };
+  const dateOfToday = () => {
+    const date = new Date();
+    return date.toISOString().split('T')[0];
+  }
+
+  const loadHistoryData = async () => {
+    const userId = getCurrUserId();
+    const historyData = await getDataFromDatabase(`users/${userId}/workoutHistory`);
+    setHistoryItems(historyData);
+  }
+
 
   const renderItem = (item) => {
     return (
-        <TouchableOpacity style={{marginRight: 10, marginTop: 17}}>
-          <Card>
+        <TouchableOpacity style={{marginRight: 10, marginTop: 30}}>
+          <Card backgroundColor={"white"}>
             <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-              <Text>{item.name}</Text>
+              <Text>{item.workoutName}</Text>
+              <Text>{item.duration}</Text>
             </View>
           </Card>
         </TouchableOpacity>
@@ -231,10 +219,14 @@ export default function WorkoutHistory(props) {
         </Box>
          <View style={{flex: 1}}>
            <Agenda
-              items={items}
-              loadItemsForMonth={loadItems}
-              selected={'2017-05-16'}
+              items={historyItems}
+              selected={'2022-03-20'}
               renderItem={renderItem}
+              loadItemsForMonth={loadHistoryData}
+              showsHorizontalScrollIndicator={true}
+              showsVerticalScrollIndicator={true}
+              futureScrollRange={1}
+              maxDate={dateOfToday()}
           />
         </View>
       </VStack>
