@@ -62,7 +62,13 @@ export const signup = (email, password, firstName, lastName) => {
         let newUser = {
             email: email,
             firstName: firstName,
-            lastName: lastName
+            lastName: lastName,
+            pet: {
+                health: 100
+            },
+            workoutHistory: {
+
+            }
         }
 
         //Saves to the database first using user's uid as the path
