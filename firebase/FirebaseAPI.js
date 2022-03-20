@@ -116,3 +116,10 @@ export const signIn = (email, password) => {
         })
 }
 
+/**
+ * A helper method to check whether a user has already signed in
+ * @returns {boolean}
+ */
+export const alreadySignedIn = () => {
+    return auth.currentUser !== null
+}

@@ -17,7 +17,7 @@ import FloatingLabelInput from "../../components/ui/FloatingLabelInput";
 import {Entypo} from "@expo/vector-icons";
 import IconFacebook from "../../components/ui/icons/IconFacebook";
 import IconGoogle from "../../components/ui/icons/IconGoogle";
-import {signIn} from "../../firebase/FirebaseAPI";
+import {alreadySignedIn, signIn} from "../../firebase/FirebaseAPI";
 import AlertBox from "../../components/ui/AlertBox";
 import {getLocalData, removeLocalData, storeLocalData} from "../../components/persistence/AsyncStorageAPIs";
 
@@ -29,6 +29,11 @@ export default function SignInForm({ props, setLoading }) {
     const [signInError, setSignInError] = useState("");
 
     useEffect(() => {
+
+        if (alreadySignedIn()) {
+            props.navigation.navigate("BottomTabNavScreens");
+        }
+
         let isMounted = true;
 
         // Before the component gets mounted, we are want to check there's any server errors stored

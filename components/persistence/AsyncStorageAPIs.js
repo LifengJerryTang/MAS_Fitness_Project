@@ -1,7 +1,7 @@
 /**
  * This file contains functions that encapsulate the usage of AsyncStorage API to store data locally
  */
-import {AsyncStorage} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 /**

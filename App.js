@@ -8,6 +8,7 @@ import SingleWorkout from "./screens/Workout/SingleWorkout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SignIn from "./screens/SignIn/SignIn"
 import SignUp from "./screens/SignUp/SignUp"
+import WorkoutHistory from "./screens/WorkoutHistory/WorkoutHistory";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +37,16 @@ const BottomTabNavScreens = () => {
                     <MaterialCommunityIcons name="paw" color={color} size={size} />
                 ),
             }}
+        />
+
+        <Tab.Screen name="WorkoutHistory"
+                    component={WorkoutHistory}
+                    options={{
+                        tabBarLabel: "Workout History",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="history" color={color} size={size} />
+                        ),
+                    }}
         />
     </Tab.Navigator>
 }
