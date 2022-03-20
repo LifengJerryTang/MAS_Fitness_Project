@@ -12,12 +12,14 @@ import {
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import SignInForm from "./SignInForm";
 import Loading from "../../components/ui/Loading";
-import {signIn} from "../../firebase/FirebaseAPI";
 
 export default function SignIn(props) {
 
   const [loading, setLoading] = useState(false);
 
+    /**
+     * Displays the loading icon if we are waiting for server response
+     */
   if (loading) {
     return (
         <NativeBaseProvider>

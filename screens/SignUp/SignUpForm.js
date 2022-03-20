@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {
     Button, Center,
@@ -20,6 +20,7 @@ import IconGoogle from "../../components/ui/icons/IconGoogle";
 import {signup} from "../../firebase/FirebaseAPI";
 import AlertBox from "../../components/ui/AlertBox";
 import { useScrollToTop } from '@react-navigation/native';
+import {getLocalData, removeLocalData, storeLocalData} from "../../components/persistence/AsyncStorageAPIs";
 
 export default function SignUpForm({ props, setLoading }) {
     const [email, setEmail] = useState("");
@@ -31,7 +32,24 @@ export default function SignUpForm({ props, setLoading }) {
     const [signupError, setSignupError] = useState("");
     const [showConfirmPass, setShowConfirmPass] = useState(false);
 
+    useEffect(() => {
+        let isMounted = true;
+        // Before the component gets mounted, we are want to check there's any server errors stored
+        // after a user makes a failed login attempt.
+        // If yes, we'll display it
+        getLocalData("serverError").then(message => {
+            if (isMounted) setSignupError(message);
+        })
+        return () => { isMounted = false };
+    }, []);
+
+
+    /**
+     * A helper function that validates user inputs when the user attempts to sign up
+     * @returns {boolean}
+     */
     const inputValid = () => {
+
         if (!firstName) {
             setSignupError("Please enter your first name!");
             return false
@@ -55,6 +73,11 @@ export default function SignUpForm({ props, setLoading }) {
 
     }
 
+    /**
+     * Helper function that uses regex to validate an email format
+     * @param email
+     * @returns {RegExpMatchArray}
+     */
     const checkEmailValidity = (email) => {
         return String(email)
             .toLowerCase()
@@ -68,17 +91,27 @@ export default function SignUpForm({ props, setLoading }) {
         if (!inputValid()) {
             return;
         }
+
         setLoading(true);
+
         signup(email, password, firstName, lastName).then(user => {
             setLoading(false);
-            props.navigation.navigate("BottomTabNavScreens", {user});
+            // Removes the server error first before signing in
+            removeLocalData("serverError").then(() => {
+                props.navigation.navigate("BottomTabNavScreens", {user});
+            })
         }).catch(error => {
-            setLoading(false);
-            setSignupError(error.message);
+            // Since we got an error given by firebase, we use async storage
+            // to store this error message locally
+            storeLocalData("serverError", error.message).then(() => {
+                setSignupError(error.message)
+                setLoading(false);
+            })
         })
     }
 
     const displayError = () => {
+
         if (signupError) {
             return <AlertBox status={"error"} title={"ERROR!"} message={signupError}/>
         }
@@ -431,7 +464,9 @@ export default function SignUpForm({ props, setLoading }) {
                             },
                         }}
                         onPress={() => {
-                            props.navigation.navigate("SignIn");
+                            removeLocalData("serverError").then(() => {
+                                props.navigation.navigate("SignIn");
+                            })
                         }}
                     >
                         Sign in

@@ -1,7 +1,6 @@
 import React from "react";
-import {VStack, Center, NativeBaseProvider, ScrollView, Text, Box, StatusBar} from "native-base";
-import {TouchableOpacity} from "react-native";
-import Card from "../components/ui/Card";
+import {VStack, Center, NativeBaseProvider, Progress, Box, StatusBar, Text} from "native-base";
+import {Image, StyleSheet} from "react-native";
 import Header from "../components/ui/Header";
 
 const Pet = () => {
@@ -22,6 +21,7 @@ const Pet = () => {
                 />
                 <VStack
                     flex={1}
+                    space={10}
                     _light={{
                         bg: "white",
                     }}
@@ -60,9 +60,32 @@ const Pet = () => {
                         <Header title={"Pet"}/>
 
                     </Box>
+                    <Center>
+                        <Image
+                            style={{width: 410, height: 300}}
+                            source={{uri: `https://c.tenor.com/b1DVdUGztTIAAAAC/cartoon-dog.gif`}} />
+                    </Center>
+                    <Center>
+                        <Text fontSize={'xl'} textAlign={"center"}>
+                            Health
+                        </Text>
+                        <Progress colorScheme="warning" min={0} max={ 100}
+                                  value={100} style={styles.progress} m="auto"/>
+                    </Center>
 
                 </VStack>
             </NativeBaseProvider>
 }
+
+
+
+const styles = StyleSheet.create({
+
+    progress: {
+        height: 20,
+        width:350,
+        marginTop: 15
+    }
+});
 
 export default Pet;

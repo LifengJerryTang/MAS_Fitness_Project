@@ -18,14 +18,13 @@ export default class FloatingLabelInput extends Component {
   handleFocus = () => this.setState({ isFocused: true });
   handleBlur = () => this.setState({ isFocused: false });
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
+  componentDidUpdate(nextProps, nextState, nextContext) {
     Animated.timing(this._animatedIsFocused, {
       duration: 200,
       useNativeDriver: false,
       toValue: this.state.isFocused || this.props.defaultValue !== '' ? 1 : 0,
     }).start();
   }
-
 
   render() {
     const { label, ...props } = this.props;

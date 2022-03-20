@@ -21,6 +21,9 @@ export default function SignUp(props) {
 
     const [loading, setLoading] = useState(false);
 
+    /**
+     * Displays the loading icon if we are waiting for server response
+     */
     if (loading) {
         return (
             <NativeBaseProvider>

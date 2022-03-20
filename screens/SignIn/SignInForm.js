@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {
     Button, Center,
@@ -19,6 +19,7 @@ import IconFacebook from "../../components/ui/icons/IconFacebook";
 import IconGoogle from "../../components/ui/icons/IconGoogle";
 import {signIn} from "../../firebase/FirebaseAPI";
 import AlertBox from "../../components/ui/AlertBox";
+import {getLocalData, removeLocalData, storeLocalData} from "../../components/persistence/AsyncStorageAPIs";
 
 export default function SignInForm({ props, setLoading }) {
 
@@ -27,6 +28,24 @@ export default function SignInForm({ props, setLoading }) {
     const [showPass, setShowPass] = React.useState(false);
     const [signInError, setSignInError] = useState("");
 
+    useEffect(() => {
+        let isMounted = true;
+
+        // Before the component gets mounted, we are want to check there's any server errors stored
+        // after a user makes a failed login attempt.
+        // If yes, we'll display it
+        getLocalData("serverError").then(message => {
+            if (isMounted) setSignInError(message);
+        })
+
+        // Clean up useEffect
+        return () => { isMounted = false };
+    }, []);
+
+    /**
+     * A helper function that validates user inputs when the user attempts to sign in
+     * @returns {boolean}
+     */
     const inputValid = () => {
         if (!email) {
             setSignInError("Please enter your email!");
@@ -42,7 +61,11 @@ export default function SignInForm({ props, setLoading }) {
 
     }
 
+    /**
+     * Function that signs a user in
+     */
     const userSignIn = () => {
+
         if (!inputValid()) {
             return;
         }
@@ -51,13 +74,23 @@ export default function SignInForm({ props, setLoading }) {
 
         signIn(email, password).then(user => {
             setLoading(false);
-            props.navigation.navigate("BottomTabNavScreens", {user});
+            // Removes the server error first before signing in
+            removeLocalData("serverError").then(() => {
+                props.navigation.navigate("BottomTabNavScreens", {user});
+            })
         }).catch(error => {
-            setLoading(false);
-            setSignInError(error.message);
+            // Since we got an error given by firebase, we use async storage
+            // to store this error message locally
+            storeLocalData("serverError", error.message).then(() => {
+                setLoading(false);
+            })
         })
     }
 
+    /**
+     * Displays any error messages
+     * @returns {JSX.Element}
+     */
     const displayError = () => {
         if (signInError) {
             return <AlertBox status={"error"} title={"ERROR!"} message={signInError}/>
@@ -320,7 +353,9 @@ export default function SignInForm({ props, setLoading }) {
                             },
                         }}
                         onPress={() => {
-                            props.navigation.navigate("SignUp");
+                            removeLocalData("serverError").then(() => {
+                                props.navigation.navigate("SignUp");
+                            })
                         }}
                     >
                         Sign up

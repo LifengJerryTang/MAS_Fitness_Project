@@ -45,7 +45,7 @@ const SingleWorkout = (props) => {
     };
 
     const complete = () => {
-
+        props.navigation.navigate("BottomTabNavScreens");
     }
 
     const makeMeTwoDigits = (n) => {
@@ -109,7 +109,7 @@ const SingleWorkout = (props) => {
                                 colorScheme="success" key={"solid"} variant={"solid"} _icon={{
                                 as: AntDesign,
                                 name: "check"
-                            }} />
+                            }} onPress={() => complete()}/>
                         </HStack>
 
                     }

@@ -78,6 +78,7 @@ const Workouts = (props) => {
     const [workouts, setWorkouts] = useState([]);
 
     useEffect(() => {
+        // Before mounting any components, grab all the workouts from firebase first
       getDataFromDatabase("/workouts").then((allWorkouts) => {
           setWorkouts(allWorkouts);
       })

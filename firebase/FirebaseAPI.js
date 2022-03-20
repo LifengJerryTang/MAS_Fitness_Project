@@ -1,5 +1,10 @@
+/**
+ * This file contains functions that encapsulate the usage of Firebase API for performing CRUD functions to the
+ * Firebase Realtime Database
+ */
+
 import {db, auth} from "./firebase-config";
-import {get, query, ref} from "firebase/database";
+import {get, query, ref, set} from "firebase/database";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
 /**
@@ -61,7 +66,9 @@ export const signup = (email, password, firstName, lastName) => {
         }
 
         //Saves to the database first using user's uid as the path
+        console.log(userCredential.user.uid);
         saveToDatabaseOverwrite(`users/${userCredential.user.uid}`, newUser);
+        console.log(newUser)
         return newUser;
 
     }).catch((error) => {
