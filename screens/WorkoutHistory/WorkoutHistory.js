@@ -3,7 +3,6 @@ import {
   Box, HStack, Icon, Text, VStack, StatusBar, IconButton, Hidden, View, Card,
 } from "native-base";
 
-import {AntDesign} from "@expo/vector-icons";
 
 import {Agenda} from 'react-native-calendars';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
@@ -13,7 +12,6 @@ import {getCurrUserId, getDataFromDatabase} from "../../firebase/FirebaseAPI";
 export default function WorkoutHistory(props) {
 
   const [historyItems, setHistoryItems] = useState({});
-
 
   useEffect(() => {
    loadHistoryData().then();
@@ -25,6 +23,7 @@ export default function WorkoutHistory(props) {
   }
 
   const loadHistoryData = async () => {
+      // Since the workout history is stored with the user, we need to get the user id first
     const userId = getCurrUserId();
     const historyData = await getDataFromDatabase(`users/${userId}/workoutHistory`);
     setHistoryItems(historyData);
@@ -107,18 +106,6 @@ export default function WorkoutHistory(props) {
           <Hidden from="md">
             <HStack space="2" justifyContent="space-between">
               <HStack space="2" alignItems="center">
-                <IconButton
-                  variant="ghost"
-                  colorScheme="light"
-                  icon={
-                    <Icon
-                      size="6"
-                      as={AntDesign}
-                      name="arrowleft"
-                      color="coolGray.50"
-                    />
-                  }
-                />
                 <Text color="coolGray.50" fontSize="lg">
                   Workout History
                 </Text>
@@ -127,9 +114,12 @@ export default function WorkoutHistory(props) {
           </Hidden>
         </Box>
          <View style={{flex: 1}}>
+           {/*  We are using the Agenda component provided by react native to display workout histories.
+                Although the name "Agenda" doesn't sound fitting, it's by far the best component for displaying
+                workout history data.*/}
            <Agenda
               items={historyItems}
-              selected={'2022-03-20'}
+              selected={dateOfToday()}
               renderItem={renderItem}
               loadItemsForMonth={loadHistoryData}
               showsHorizontalScrollIndicator={true}

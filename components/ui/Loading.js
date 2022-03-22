@@ -1,6 +1,12 @@
 import React from "react";
 import {Spinner, VStack, Heading, Center} from "native-base";
 
+/**
+ * This component displays a spinner that presents the loading state
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Loading = (props) => {
     return (
         <Center>

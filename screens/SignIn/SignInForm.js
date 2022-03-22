@@ -78,9 +78,10 @@ export default function SignInForm({ props, setLoading }) {
         setLoading(true);
 
         signIn(email, password).then(user => {
-            setLoading(false);
+
             // Removes the server error first before signing in
             removeLocalData("serverError").then(() => {
+                setLoading(false);
                 props.navigation.navigate("BottomTabNavScreens", {user});
             })
         }).catch(error => {

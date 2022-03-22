@@ -3,6 +3,9 @@ import { Animated } from 'react-native';
 import { Input, Box } from 'native-base';
 import { Platform } from 'react-native';
 
+/**
+ * This component is provided by native base that displays a floating label
+ */
 export default class FloatingLabelInput extends Component {
   constructor(props) {
     super(props);

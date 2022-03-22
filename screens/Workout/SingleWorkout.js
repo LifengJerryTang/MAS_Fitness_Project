@@ -3,6 +3,8 @@ import {Center, IconButton, VStack, NativeBaseProvider, Text, Button, HStack} fr
 import { AntDesign } from "@expo/vector-icons";
 import {StyleSheet, Image, View} from "react-native";
 import LottieView from "lottie-react-native";
+import {getCurrUserId, getDataFromDatabase, saveToDatabase} from "../../firebase/FirebaseAPI";
+import DialogBox from "../../components/ui/DialogBox";
 
 const SingleWorkout = (props) => {
 
@@ -11,6 +13,7 @@ const SingleWorkout = (props) => {
     const [workoutGif] = useState(props.route.params.workoutGif);
     const [interv, setInterv] = useState(0);
     const [timerStarted, setTimerStarted] = useState(true);
+    const [openDialog, setOpenDialog] = useState(false);
 
     useEffect(() => {
         startTimer();
@@ -44,8 +47,35 @@ const SingleWorkout = (props) => {
         setTimerStarted(false)
     };
 
-    const complete = () => {
-        props.navigation.navigate("BottomTabNavScreens");
+    const completeWorkout = (choice) => {
+
+        if (choice !== "OK") {
+            setOpenDialog(false)
+            return;
+        }
+
+        const currUserId = getCurrUserId();
+        const todayDate = dateOfToday();
+        const path = `users/${currUserId}/workoutHistory/${todayDate}`;
+        const totalWorkoutTime = `${time.hour} hours ${time.min} mins ${time.sec} secs`;
+
+        getDataFromDatabase(path).then((workoutHistory) => {
+            let updatedHistory = workoutHistory
+
+            if (!workoutHistory) {
+                updatedHistory = [];
+            }
+
+            updatedHistory.push({
+                duration: totalWorkoutTime,
+                workoutName: workoutName
+            })
+
+            saveToDatabase(path, updatedHistory);
+            setOpenDialog(false)
+            props.navigation.navigate("BottomTabNavScreens");
+        })
+
     }
 
     const makeMeTwoDigits = (n) => {
@@ -56,6 +86,11 @@ const SingleWorkout = (props) => {
         return `${makeMeTwoDigits(time.hour)}:${makeMeTwoDigits(time.min)}:${makeMeTwoDigits(time.sec)}`;
     }
 
+    const dateOfToday = () => {
+        const date = new Date();
+        return date.toISOString().split('T')[0];
+    }
+
     return (
         <NativeBaseProvider>
             <Center flex={1} px="3"
@@ -63,6 +98,9 @@ const SingleWorkout = (props) => {
                         bg: "white",
                     }}
             >
+                <DialogBox onClose={(buttonChoice) => completeWorkout(buttonChoice)} isOpen={openDialog}
+                           title={"Complete Workout"}
+                           description={'If you choose to complete this workout, your results will be saved and reflected on your pet\'s health status.'}/>
                 <VStack space={5} alignItems="center"
                 >
                     <Image
@@ -73,7 +111,7 @@ const SingleWorkout = (props) => {
                               color: "primary.300"
                           }} _dark={{
                         color: "coolGray.400"}}>
-                        {workoutName}
+                        {workoutName + ""}
                     </Text>
                     <Text bold fontSize="6xl">
                         {displayTimer()}
@@ -97,7 +135,7 @@ const SingleWorkout = (props) => {
                                 borderRadius="full"
                                 p={30}
                                 size={"lg"}
-                                colorScheme="primary" key={"solid"} variant={"solid"} _icon={{
+                                colorScheme="primary" variant={"solid"} _icon={{
                                 as: AntDesign,
                                 name: "play"
                             }} />
@@ -106,10 +144,10 @@ const SingleWorkout = (props) => {
                                 borderRadius="full"
                                 p={30}
                                 size={"lg"}
-                                colorScheme="success" key={"solid"} variant={"solid"} _icon={{
+                                colorScheme="success" variant={"solid"} _icon={{
                                 as: AntDesign,
                                 name: "check"
-                            }} onPress={() => complete()}/>
+                            }} onPress={() => setOpenDialog(true)}/>
                         </HStack>
 
                     }
