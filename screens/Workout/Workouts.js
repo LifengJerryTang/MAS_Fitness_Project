@@ -67,10 +67,8 @@ const WorkoutList = (props) => {
                     })}
                 </VStack>
             </ScrollView>
-
         </VStack>
-
-         );
+    );
 }
 
 const Workouts = (props) => {
