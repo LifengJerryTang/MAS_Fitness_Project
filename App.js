@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SignIn from "./screens/SignIn/SignIn"
 import SignUp from "./screens/SignUp/SignUp"
 import WorkoutHistory from "./screens/WorkoutHistory/WorkoutHistory";
+import EnterMoreInfo from "./screens/EnterMoreInfo/EnterMoreInfo";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,11 +55,15 @@ const BottomTabNavScreens = () => {
 export default function App() {
   return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="SignIn"
+          <Stack.Navigator initialRouteName="EnterMoreInfo"
                            screenOptions={{
                                header: () => null
                            }}
           >
+              <Stack.Screen
+                  name="EnterMoreInfo"
+                  component={EnterMoreInfo}
+              />
               <Stack.Screen
                   name="SignIn"
                   component={SignIn}
