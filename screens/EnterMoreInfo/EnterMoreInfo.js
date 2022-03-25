@@ -11,15 +11,14 @@ import {
     View,
     Radio,
     Center,
-    Container,
-    Input,
-    useColorModeValue
+    useColorModeValue,
 } from "native-base";
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import { Ionicons} from "@expo/vector-icons";
 import Stepper from 'react-native-stepper-ui';
 import FloatingLabelInput from "../../components/ui/FloatingLabelInput";
-import {set} from "firebase/database";
+import {StyleSheet} from "react-native";
+import AlertBox from "../../components/ui/AlertBox";
 
 const ChooseGender = (props) =>{
     return (
@@ -68,11 +67,11 @@ const EnterWeight = (props) => {
             </Text>
             <FloatingLabelInput
                 isRequired
-                label="Weight"
-                labelColor="#9ca3af"
-                labelBGColor={useColorModeValue("#fff", "#1f2937")}
+                label={!props.weight ? "Weight" : null}
+                labelColor={!props.weight ? "#9ca3af" : null}
+                labelBGColor={!props.weight ? useColorModeValue("#fff", "#1f2937") : null}
                 borderRadius="4"
-                defaultValue={""}
+                defaultValue={props.weight}
                 onChangeText={(txt) => props.setWeight(txt)}
                 _text={{
                     fontSize: "sm",
@@ -102,7 +101,53 @@ export default function EnterMoreInfo(props) {
         <EnterWeight setWeight={(text) => setWeight(text)} weight={weight}/>
     ];
 
+    const validateInput = () => {
+        if (active === 0) {
+            if (gender) {
+                setError("");
+                return true;
+            } else {
+                setError("Please choose your gender!");
+                return false;
+            }
+        } else if (active === 1) {
+            if (weight) {
+                setError("");
+                return true;
+            } else {
+                setError("Please enter your weight!");
+                return false
+            }
+        }
 
+        return true;
+    }
+    const goToNextStep = () => {
+
+        const inputValid = validateInput();
+
+        if (!inputValid) {
+            return;
+        }
+
+        setActive((p) => p + 1)
+
+    }
+
+    const finishSteps = () => {
+        const inputValid = validateInput();
+
+        if (!inputValid) {
+            return;
+        }
+
+        alert('Finish');
+    }
+
+    const goBackOneStep = () => {
+        setError("");
+        setActive((p) => p - 1)
+    }
 
     return (
         <NativeBaseProvider>
@@ -167,17 +212,45 @@ export default function EnterMoreInfo(props) {
                 </Box>
                 <View style={{ marginTop: 20, marginHorizontal: 20, marginBottom: 60 }}>
                     <Stepper
-                        stepStyle={{backgroundColor: "#184c64"}}
-                        buttonStyle={{backgroundColor: "#184c64"}}
+                        stepStyle={{backgroundColor: "#184c64", width: 50, height: 50, borderColor: "#184c64"}}
+                        buttonStyle={styles.button}
+                        buttonTextStyle={styles.buttonText}
+                        showButton={true}
                         active={active}
                         content={content}
-                        onBack={() => setActive((p) => p - 1)}
-                        onFinish={() => alert('Finish')}
-                        onNext={() => setActive((p) => p + 1)}
+                        onBack={() => goBackOneStep()}
+                        onFinish={() => finishSteps()}
+                        onNext={() => goToNextStep()}
                     />
+
+                    {
+                        error ? <AlertBox status={"error"} title={"Error"}  message={error}/> : <Text/>
+                    }
 
                 </View>
             </VStack>
         </NativeBaseProvider>
     );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        backgroundColor: "#184c64",
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 15,
+        paddingBottom: 15,
+    },
+
+    buttonText: {
+        fontSize: 16
+    },
+
+    stepperContainer: {
+        marginTop: 20,
+        marginHorizontal: 20,
+        marginBottom: 60
+    },
+
+});
+
