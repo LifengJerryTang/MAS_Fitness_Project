@@ -41,8 +41,8 @@ export default function WorkoutHistory(props) {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-              <Text fontSize={"md"}>{item.workoutName}</Text>
-              <Text fontSize={"md"}>{item.duration}</Text>
+                <Text fontSize={"md"}>{item.workoutName}</Text>
+                <Text fontSize={"md"}>{item.duration}</Text>
                 <Text bold fontSize={"md"}>{item.caloriesBurned} cal</Text>
             </View>
           </Card>

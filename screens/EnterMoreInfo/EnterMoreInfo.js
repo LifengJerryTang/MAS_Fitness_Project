@@ -98,6 +98,9 @@ export default function EnterMoreInfo(props) {
     const [active, setActive] = useState(0);
     const [error, setError] = useState("");
 
+    // The UI that we are going to display at each step
+    // at step 0, we are going to display the ChooseGender component
+    // at step 1, we are going to display the EnterWeight component
     const content = [
         <ChooseGender chooseGender={(text) => setGender(text)} gender={gender}/>,
         <EnterWeight setWeight={(text) => setWeight(text)} weight={weight}/>
@@ -113,11 +116,11 @@ export default function EnterMoreInfo(props) {
                 return false;
             }
         } else if (active === 1) {
-            if (weight) {
+            if (weight && Number(weight)) {
                 setError("");
                 return true;
             } else {
-                setError("Please enter your weight!");
+                setError("Please enter a valid weight!");
                 return false
             }
         }
