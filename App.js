@@ -17,7 +17,9 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavScreens = () => {
     return <Tab.Navigator initialRouteName="Workouts"
                            screenOptions={{
-                               header: () => null
+                               header: () => null,
+                               tabBarActiveBackgroundColor: "#184c64",
+                               tabBarActiveTintColor: "#fff"
                            }}>
         <Tab.Screen
             name="Workouts"
@@ -44,7 +46,7 @@ const BottomTabNavScreens = () => {
                     component={WorkoutHistory}
                     options={{
                         tabBarLabel: "Workout History",
-                        tabBarIcon: ({ color, size }) => (
+                        tabBarIcon: ({ color , size }) => (
                             <MaterialCommunityIcons name="history" color={color} size={size} />
                         ),
                     }}
@@ -55,15 +57,12 @@ const BottomTabNavScreens = () => {
 export default function App() {
   return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="EnterMoreInfo"
+          <Stack.Navigator initialRouteName="SignIn"
                            screenOptions={{
                                header: () => null
                            }}
           >
-              <Stack.Screen
-                  name="EnterMoreInfo"
-                  component={EnterMoreInfo}
-              />
+
               <Stack.Screen
                   name="SignIn"
                   component={SignIn}
@@ -71,6 +70,10 @@ export default function App() {
               <Stack.Screen
                   name="SignUp"
                   component={SignUp}
+              />
+              <Stack.Screen
+                  name="EnterMoreInfo"
+                  component={EnterMoreInfo}
               />
               <Stack.Screen
                   name="BottomTabNavScreens"

@@ -31,6 +31,7 @@ export default function WorkoutHistory(props) {
 
 
   const renderItem = (item) => {
+
     return (
         <TouchableOpacity style={{marginRight: 10, marginTop: 30}}>
           <Card backgroundColor={"white"}>
@@ -40,8 +41,9 @@ export default function WorkoutHistory(props) {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-              <Text>{item.workoutName}</Text>
-              <Text>{item.duration}</Text>
+              <Text fontSize={"md"}>{item.workoutName}</Text>
+              <Text fontSize={"md"}>{item.duration}</Text>
+                <Text bold fontSize={"md"}>{item.caloriesBurned} cal</Text>
             </View>
           </Card>
         </TouchableOpacity>

@@ -19,6 +19,7 @@ import Stepper from 'react-native-stepper-ui';
 import FloatingLabelInput from "../../components/ui/FloatingLabelInput";
 import {StyleSheet} from "react-native";
 import AlertBox from "../../components/ui/AlertBox";
+import {getCurrUserId, saveToDatabase} from "../../firebase/FirebaseAPI";
 
 const ChooseGender = (props) =>{
     return (
@@ -63,7 +64,7 @@ const EnterWeight = (props) => {
     return (
         <VStack space={5} marginBottom={10}>
             <Text textAlign={"center"} fontSize={"2xl"}>
-                Input your weight.
+                Enter your weight (lb).
             </Text>
             <FloatingLabelInput
                 isRequired
@@ -93,6 +94,7 @@ export default function EnterMoreInfo(props) {
     const [gender, setGender] = React.useState('');
     const [weight, setWeight] = useState("");
 
+    // Saves which step we are currently on
     const [active, setActive] = useState(0);
     const [error, setError] = useState("");
 
@@ -122,8 +124,10 @@ export default function EnterMoreInfo(props) {
 
         return true;
     }
+
     const goToNextStep = () => {
 
+        // Check for any errors first
         const inputValid = validateInput();
 
         if (!inputValid) {
@@ -134,14 +138,21 @@ export default function EnterMoreInfo(props) {
 
     }
 
-    const finishSteps = () => {
+    const finishSteps = async () => {
         const inputValid = validateInput();
 
         if (!inputValid) {
             return;
         }
 
-        alert('Finish');
+        // saves the profile information to the user's object in the database
+        await saveToDatabase(`users/${getCurrUserId()}/profileInfo`, {
+            gender: gender,
+            weight: weight,
+        });
+
+        props.navigation.navigate("BottomTabNavScreens");
+
     }
 
     const goBackOneStep = () => {
@@ -210,9 +221,15 @@ export default function EnterMoreInfo(props) {
                         </HStack>
                     </Hidden>
                 </Box>
+
+                {/*We are going to use the stepper component to ask user to enter profile information*/}
                 <View style={{ marginTop: 20, marginHorizontal: 20, marginBottom: 60 }}>
                     <Stepper
-                        stepStyle={{backgroundColor: "#184c64", width: 50, height: 50, borderColor: "#184c64"}}
+                        stepStyle={{backgroundColor: "#fff",
+                                    width: 50,
+                                    height: 50,
+                                    borderColor: "#184c64", borderWidth: 5}}
+                        stepTextStyle={{color: "#184c64" }}
                         buttonStyle={styles.button}
                         buttonTextStyle={styles.buttonText}
                         showButton={true}

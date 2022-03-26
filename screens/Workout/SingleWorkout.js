@@ -5,12 +5,16 @@ import {StyleSheet, Image, View} from "react-native";
 import LottieView from "lottie-react-native";
 import {getCurrUserId, getDataFromDatabase, saveToDatabase} from "../../firebase/FirebaseAPI";
 import DialogBox from "../../components/ui/DialogBox";
+import {getLocalData, storeLocalData} from "../../components/persistence/AsyncStorageAPIs";
 
 const SingleWorkout = (props) => {
 
+
+    const [workoutName] = useState(props.route.params.workout.name);
+    const [workoutGif] = useState(props.route.params.workout.gif);
+    const [workoutMET] = useState(props.route.params.workout.MET);
+
     const [time, setTime] = useState({sec:0, min:0, hour:0});
-    const [workoutName] = useState(props.route.params.workoutName);
-    const [workoutGif] = useState(props.route.params.workoutGif);
     const [interv, setInterv] = useState(0);
     const [timerStarted, setTimerStarted] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
@@ -56,24 +60,31 @@ const SingleWorkout = (props) => {
 
         const currUserId = getCurrUserId();
         const todayDate = dateOfToday();
-        const path = `users/${currUserId}/workoutHistory/${todayDate}`;
+        const userPath = `users/${currUserId}`;
         const totalWorkoutTime = `${time.hour} hours ${time.min} mins ${time.sec} secs`;
 
-        getDataFromDatabase(path).then((workoutHistory) => {
-            let updatedHistory = workoutHistory
+        // Need some metadata from user for calculating calories and updating workout history
+        getDataFromDatabase(userPath).then((user) => {
+            let updatedHistory = []
 
-            if (!workoutHistory) {
-                updatedHistory = [];
+            if (user.workoutHistory && user.workoutHistory[todayDate]) {
+                updatedHistory = user.workoutHistory[todayDate];
             }
+
+            // Using a particular formula to calculate the calories burned
+            const caloriesBurned = time.min * (workoutMET * 3.5 * (user.profileInfo.weight / 2.205)) / 200
 
             updatedHistory.push({
                 duration: totalWorkoutTime,
-                workoutName: workoutName
+                workoutName: workoutName,
+                caloriesBurned: Math.round(caloriesBurned)
             })
 
-            saveToDatabase(path, updatedHistory);
+            // save the updated workout history
+            saveToDatabase(`${userPath}/workoutHistory/${todayDate}`, updatedHistory);
             setOpenDialog(false)
             props.navigation.navigate("BottomTabNavScreens");
+
         })
 
     }
