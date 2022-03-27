@@ -32,11 +32,11 @@ const SingleWorkout = (props) => {
     let updatedS = time.sec, updatedM = time.min, updatedH = time.hour;
 
     const runTimer = () => {
-        if(updatedM === 60){
+        if(updatedM === 59){
             updatedH++;
             updatedM = 0;
         }
-        if(updatedS === 60){
+        if(updatedS === 59){
             updatedM++;
             updatedS = 0;
         }
@@ -118,11 +118,10 @@ const SingleWorkout = (props) => {
                     <Image
                         style={{width: 410, height: 300}}
                         source={{uri: `${workoutGif}`}} />
-                    <Text fontSize="2xl" bold color={"primary"}
+                    <Text fontSize="2xl" bold
                           _light={{
-                              color: "primary.300"
-                          }} _dark={{
-                        color: "coolGray.400"}}>
+                              color: "primary.600"
+                          }} >
                         {workoutName + ""}
                     </Text>
                     <Text bold fontSize="6xl">
