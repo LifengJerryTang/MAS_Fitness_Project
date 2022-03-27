@@ -7,8 +7,8 @@ import Header from "../../components/ui/Header";
 
 const WorkoutList = (props) => {
 
-    const goToWorkout = (workoutName, workoutGif) => {
-        props.navigation.navigate('SingleWorkout', {workoutName, workoutGif})
+    const goToWorkout = (workout) => {
+        props.navigation.navigate('SingleWorkout', {workout})
     }
 
     return (
@@ -56,7 +56,7 @@ const WorkoutList = (props) => {
                 <VStack space={4} alignItems="center">
                     {props.workouts.map((workout) => {
                         return <TouchableOpacity key={workout.name}
-                                                 onPress={() => goToWorkout(workout.name, workout.gif)}
+                                                 onPress={() => goToWorkout(workout)}
                         >
                             <Card
                                 imageUrl={workout.imageUrl}
