@@ -94,7 +94,8 @@ export default function SignUpForm({ props, setLoading }) {
 
         setLoading(true);
 
-        signup(email, password, firstName, lastName).then(user => {
+        signup(email, password, firstName, lastName).then((user) => {
+
             // Removes the server error first before signing in
             removeLocalData("serverError").then(() => {
                 setLoading(false);

@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SignIn from "./screens/SignIn/SignIn"
 import SignUp from "./screens/SignUp/SignUp"
 import WorkoutHistory from "./screens/WorkoutHistory/WorkoutHistory";
+import EnterMoreInfo from "./screens/EnterMoreInfo/EnterMoreInfo";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -16,7 +17,9 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavScreens = () => {
     return <Tab.Navigator initialRouteName="Workouts"
                            screenOptions={{
-                               header: () => null
+                               header: () => null,
+                               tabBarActiveBackgroundColor: "#184c64",
+                               tabBarActiveTintColor: "#fff"
                            }}>
         <Tab.Screen
             name="Workouts"
@@ -43,7 +46,7 @@ const BottomTabNavScreens = () => {
                     component={WorkoutHistory}
                     options={{
                         tabBarLabel: "Workout History",
-                        tabBarIcon: ({ color, size }) => (
+                        tabBarIcon: ({ color , size }) => (
                             <MaterialCommunityIcons name="history" color={color} size={size} />
                         ),
                     }}
@@ -59,6 +62,7 @@ export default function App() {
                                header: () => null
                            }}
           >
+
               <Stack.Screen
                   name="SignIn"
                   component={SignIn}
@@ -66,6 +70,10 @@ export default function App() {
               <Stack.Screen
                   name="SignUp"
                   component={SignUp}
+              />
+              <Stack.Screen
+                  name="EnterMoreInfo"
+                  component={EnterMoreInfo}
               />
               <Stack.Screen
                   name="BottomTabNavScreens"
