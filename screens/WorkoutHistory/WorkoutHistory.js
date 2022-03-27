@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-  Box, HStack, Icon, Text, VStack, StatusBar, IconButton, Hidden, View, Card,
+  Box, HStack, Text, VStack, StatusBar, Hidden, View, Card,
 } from "native-base";
 
 

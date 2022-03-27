@@ -69,7 +69,7 @@ const Pet = () => {
                         <Text fontSize={'xl'} textAlign={"center"}>
                             Health
                         </Text>
-                        <Progress colorScheme="warning" min={0} max={ 100}
+                        <Progress min={0} max={100}
                                   value={100} style={styles.progress} m="auto"/>
                     </Center>
 
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     progress: {
         height: 20,
         width:350,
-        marginTop: 15
+        marginTop: 15,
     }
 });
 
