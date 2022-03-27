@@ -67,6 +67,7 @@ const SingleWorkout = (props) => {
         getDataFromDatabase(userPath).then((user) => {
             let updatedHistory = []
 
+            //Check if there's any workout histories already exist for today's date
             if (user.workoutHistory && user.workoutHistory[todayDate]) {
                 updatedHistory = user.workoutHistory[todayDate];
             }
