@@ -30,7 +30,7 @@ const WorkoutStats = () => {
             let currDate = new Date();
             let pastDay = new Date(currDate.setDate(currDate.getDate() - i)).toISOString().split('T')[0];
 
-            if (workoutHistory.hasOwnProperty(pastDay)) {
+            if (workoutHistory && workoutHistory.hasOwnProperty(pastDay)) {
                 let totalCaloriesBurned = 0;
 
                 workoutHistory[pastDay].forEach((historyItem) => {
@@ -43,6 +43,7 @@ const WorkoutStats = () => {
             }
         }
 
+        console.log(caloriesBurned)
         setCaloriesBurnedByDays(caloriesBurned);
     }
 
@@ -61,6 +62,11 @@ const WorkoutStats = () => {
 
         }
 
+        if (!workoutHistory) {
+            setFrequenciesByWeek(frequencies);
+            return;
+        }
+
         // Then for each day of the workout history, get the monday of that week, and increment frequencies accordingly
         for (let date of Object.keys(workoutHistory)) {
             let tempDateObj = new Date();
@@ -76,6 +82,7 @@ const WorkoutStats = () => {
             }
 
         }
+        console.log(frequencies)
         setFrequenciesByWeek(frequencies);
     }
 

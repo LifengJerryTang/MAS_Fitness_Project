@@ -70,8 +70,10 @@ const SingleWorkout = (props) => {
             //Check if there's any workout histories already exist for today's date
             if (user.workoutHistory && user.workoutHistory[todayDate]) {
                 updatedHistory = user.workoutHistory[todayDate];
+            } else {
+                user.workoutHistory = {};
+                user.workoutHistory[todayDate] = [];
             }
-
             // Using a particular formula to calculate the calories burned
             const caloriesBurned = time.min * (workoutMET * 3.5 * (user.profileInfo.weight / 2.205)) / 200
 

@@ -99,7 +99,7 @@ export default function SignUpForm({ props, setLoading }) {
             // Removes the server error first before signing in
             removeLocalData("serverError").then(() => {
                 setLoading(false);
-                props.navigation.navigate("BottomTabNavScreens", {user});
+                props.navigation.navigate("EnterMoreInfo", {user});
             })
         }).catch(error => {
             // Since we got an error given by firebase, we use async storage
