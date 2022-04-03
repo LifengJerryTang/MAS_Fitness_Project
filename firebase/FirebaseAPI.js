@@ -64,7 +64,7 @@ export const signup = (email, password, firstName, lastName) => {
             firstName: firstName,
             lastName: lastName,
             pet: {
-                health: 100
+                health: 60
             },
             workoutHistory: {
 

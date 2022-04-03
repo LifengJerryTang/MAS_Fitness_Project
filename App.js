@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
 import Workouts from "./screens/Workout/Workouts";
-import Pet from "./screens/Pet";
+import Pet from "./screens/Pet/Pet";
 import SingleWorkout from "./screens/Workout/SingleWorkout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SignIn from "./screens/SignIn/SignIn"
@@ -20,7 +20,7 @@ const BottomTabNavScreens = () => {
                            screenOptions={{
                                header: () => null,
                                tabBarActiveBackgroundColor: "#184c64",
-                               tabBarActiveTintColor: "#fff"
+                               tabBarActiveTintColor: "#fff",
                            }}>
         <Tab.Screen
             name="Workouts"
@@ -64,6 +64,7 @@ const BottomTabNavScreens = () => {
         />
     </Tab.Navigator>
 }
+
 
 export default function App() {
   return (

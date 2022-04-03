@@ -8,14 +8,18 @@ import {Agenda} from 'react-native-calendars';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import {TouchableOpacity} from "react-native";
 import {getCurrUserId, getDataFromDatabase} from "../../firebase/FirebaseAPI";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function WorkoutHistory(props) {
 
   const [historyItems, setHistoryItems] = useState({});
 
-  useEffect(() => {
-   loadHistoryData().then();
-  }, [])
+  useFocusEffect(
+      React.useCallback(() => {
+          loadHistoryData().then();
+          return () => {};
+      }, [])
+  );
 
   const dateOfToday = () => {
     const date = new Date();

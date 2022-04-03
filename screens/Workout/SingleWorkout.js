@@ -61,7 +61,7 @@ const SingleWorkout = (props) => {
         const currUserId = getCurrUserId();
         const todayDate = dateOfToday();
         const userPath = `users/${currUserId}`;
-        const totalWorkoutTime = `${time.hour} hours ${time.min} mins ${time.sec} secs`;
+        const totalWorkoutTime = `${time.hour} hrs ${time.min} mins ${time.sec} secs`;
 
         // Need some metadata from user for calculating calories and updating workout history
         getDataFromDatabase(userPath).then((user) => {
@@ -81,8 +81,15 @@ const SingleWorkout = (props) => {
                 caloriesBurned: Math.round(caloriesBurned)
             })
 
+            user.workoutHistory[todayDate] = updatedHistory;
+            user.pet.health += Math.round(caloriesBurned);
+
+            if (user.pet.health > 100) {
+                user.pet.health = 100;
+            }
+
             // save the updated workout history
-            saveToDatabase(`${userPath}/workoutHistory/${todayDate}`, updatedHistory);
+            saveToDatabase(userPath, user);
             setOpenDialog(false)
             props.navigation.navigate("BottomTabNavScreens");
 

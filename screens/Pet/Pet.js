@@ -1,9 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {VStack, Center, NativeBaseProvider, Progress, Box, StatusBar, Text} from "native-base";
 import {Image, StyleSheet} from "react-native";
-import Header from "../components/ui/Header";
+import Header from "../../components/ui/Header";
+import {getCurrUserId, getDataFromDatabase} from "../../firebase/FirebaseAPI";
+import {useFocusEffect} from "@react-navigation/native";
 
 const Pet = () => {
+
+    const [petHealth, setPetHealth] = useState(0);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getDataFromDatabase(`users/${getCurrUserId()}/pet`).then((pet) => {
+                setPetHealth(pet.health);
+            })
+            return () => {};
+        }, [])
+    );
+
+    const getHealthBarColor = () => {
+        if (petHealth > 60) {
+            return "primary"
+        } else if (petHealth > 30) {
+            return "warning";
+        } else {
+            return "error";
+        }
+    }
+
     return <NativeBaseProvider>
                 <StatusBar
                     translucent
@@ -62,15 +86,15 @@ const Pet = () => {
                     </Box>
                     <Center>
                         <Image
-                            style={{width: 410, height: 300}}
-                            source={{uri: `https://c.tenor.com/b1DVdUGztTIAAAAC/cartoon-dog.gif`}}/>
+                            style={{width: 300, height: 300}}
+                            source={{uri: `https://i.pinimg.com/originals/f9/8f/c2/f98fc2fc9a9e290580817a3ab118f593.gif`}}/>
                     </Center>
                     <Center>
                         <Text fontSize={'xl'} textAlign={"center"}>
-                            Health
+                            Health: {petHealth}
                         </Text>
-                        <Progress min={0} max={100}
-                                  value={100} style={styles.progress} m="auto"/>
+                        <Progress min={0} max={100} colorScheme={getHealthBarColor()}
+                                  value={petHealth} style={styles.progress} m="auto"/>
                     </Center>
 
                 </VStack>
@@ -78,12 +102,11 @@ const Pet = () => {
 }
 
 
-
 const styles = StyleSheet.create({
 
     progress: {
         height: 20,
-        width:350,
+        width: 350,
         marginTop: 15,
     }
 });

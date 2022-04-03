@@ -4,20 +4,22 @@ import {Box, Hidden, HStack, ScrollView, StatusBar, Text, View, VStack} from "na
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import React, {useEffect, useState} from "react";
 import {getCurrUserId, getDataFromDatabase} from "../../firebase/FirebaseAPI";
+import {useFocusEffect} from "@react-navigation/native";
 
 const WorkoutStats = () => {
 
     const [frequenciesByWeek, setFrequenciesByWeek ] = useState({});
     const [caloriesBurnedByDays, setCaloriesBurnedByDays] = useState({});
 
-    useEffect(() => {
-
-        loadHistoryData().then((workoutHistory) => {
-            fillFrequencyData(workoutHistory)
-            fillCaloriesData(workoutHistory);
-        })
-
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            loadHistoryData().then((workoutHistory) => {
+                fillFrequencyData(workoutHistory)
+                fillCaloriesData(workoutHistory);
+            })
+            return () => {};
+        }, [])
+    );
 
     const fillCaloriesData = (workoutHistory) => {
 
