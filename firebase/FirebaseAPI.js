@@ -64,11 +64,8 @@ export const signup = (email, password, firstName, lastName) => {
             firstName: firstName,
             lastName: lastName,
             pet: {
-                health: 60
+                health: 65
             },
-            workoutHistory: {
-
-            }
         }
 
         //Saves to the database first using user's uid as the path

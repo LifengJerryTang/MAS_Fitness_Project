@@ -43,7 +43,6 @@ const WorkoutStats = () => {
             }
         }
 
-        console.log(caloriesBurned)
         setCaloriesBurnedByDays(caloriesBurned);
     }
 
@@ -82,7 +81,6 @@ const WorkoutStats = () => {
             }
 
         }
-        console.log(frequencies)
         setFrequenciesByWeek(frequencies);
     }
 
