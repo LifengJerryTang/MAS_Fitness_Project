@@ -102,7 +102,6 @@ const Pet = () => {
 }
 
 
-
 const styles = StyleSheet.create({
 
     progress: {
