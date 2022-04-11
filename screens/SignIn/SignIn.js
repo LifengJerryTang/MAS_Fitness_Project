@@ -12,6 +12,7 @@ import {
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import SignInForm from "./SignInForm";
 import Loading from "../../components/ui/Loading";
+import {StyleSheet} from "react-native";
 
 export default function SignIn(props) {
 
@@ -115,3 +116,5 @@ export default function SignIn(props) {
     </NativeBaseProvider>
   );
 }
+
+

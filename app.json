@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FitnessHealthApp",
-    "slug": "FitnessHealthApp",
+    "name": "FitPet",
+    "slug": "FitPet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

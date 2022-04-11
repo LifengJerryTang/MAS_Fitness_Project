@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {VStack, Center, NativeBaseProvider, ScrollView, Text, Box, StatusBar} from "native-base";
-import { TouchableOpacity } from 'react-native';
+import {VStack, Center, NativeBaseProvider, ScrollView, Text, Box, StatusBar, Button} from "native-base";
+import {Platform, TouchableOpacity} from 'react-native';
 import Card from '../../components/ui/Card'
 import {getDataFromDatabase} from "../../firebase/FirebaseAPI";
 import Header from "../../components/ui/Header";
+import React, { useState, useEffect } from 'react';
+
 
 const WorkoutList = (props) => {
 
@@ -98,6 +99,7 @@ const Workouts = (props) => {
                     bg: "coolGray.900",
                 }}
             />
+            <Button onPress={() => sendPushNotification(expoPushToken)}>Send Notification</Button>
             <WorkoutList workouts={workouts} navigation={props.navigation}/>
         </NativeBaseProvider>
     );

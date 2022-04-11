@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated } from 'react-native';
+import {Animated, StyleSheet} from 'react-native';
 import { Input, Box } from 'native-base';
 import { Platform } from 'react-native';
 
@@ -90,3 +90,4 @@ export default class FloatingLabelInput extends Component {
     );
   }
 }
+
