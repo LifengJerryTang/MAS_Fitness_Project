@@ -73,7 +73,9 @@ const BottomTabNavScreens = () => {
             const diffTime = Math.abs(dateOfToday - dateOfLastWorkout);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            user.pet.health -= diffDays * 10;
+            if (diffDays >= 1) {
+                user.pet.health -= 10;
+            }
 
             if (user.pet.health <= 0) {
                 user.pet.health = 0;
@@ -85,7 +87,7 @@ const BottomTabNavScreens = () => {
 
             await saveToDatabase(`users/${getCurrUserId()}`, user);
 
-        }, 5000);
+        }, 86400000);
 
     }
 
@@ -94,8 +96,8 @@ const BottomTabNavScreens = () => {
         const message = {
             to: expoPushToken,
             sound: 'default',
-            title: 'Original Title',
-            body: 'And here is the body!',
+            title: 'Workout Reminder',
+            body: "It's time to workout to feed your pet!",
             data: { someData: 'goes here' },
         };
 
