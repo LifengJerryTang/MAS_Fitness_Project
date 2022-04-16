@@ -9,6 +9,7 @@ const Pet = () => {
 
     const [petHealth, setPetHealth] = useState(0);
 
+
     useFocusEffect(
         React.useCallback(() => {
             getDataFromDatabase(`users/${getCurrUserId()}/pet`).then((pet) => {

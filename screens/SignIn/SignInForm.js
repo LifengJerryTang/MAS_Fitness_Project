@@ -20,6 +20,7 @@ import IconGoogle from "../../components/ui/icons/IconGoogle";
 import {alreadySignedIn, signIn} from "../../firebase/FirebaseAPI";
 import AlertBox from "../../components/ui/AlertBox";
 import {getLocalData, removeLocalData, storeLocalData} from "../../components/persistence/AsyncStorageAPIs";
+import {StyleSheet} from "react-native";
 
 export default function SignInForm({ props, setLoading }) {
 
@@ -371,3 +372,9 @@ export default function SignInForm({ props, setLoading }) {
         </KeyboardAwareScrollView>
     );
 }
+
+const styles = StyleSheet.create({
+    textField: {
+        height: 20
+    },
+});
