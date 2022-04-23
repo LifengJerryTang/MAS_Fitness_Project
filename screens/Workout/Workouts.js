@@ -2,7 +2,7 @@ import {VStack, Center, NativeBaseProvider, Select, Text, Box, StatusBar, Button
 import {StyleSheet} from 'react-native';
 import {getDataFromDatabase} from "../../firebase/FirebaseAPI";
 import Header from "../../components/ui/Header";
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 
 const WorkoutList = (props) => {
@@ -44,6 +44,7 @@ const WorkoutList = (props) => {
 
     );
 }
+
 
 const Workouts = (props) => {
 
@@ -118,7 +119,6 @@ const Workouts = (props) => {
                 </Text>
                 <WorkoutList workouts={workouts} navigation={props.navigation}/>
             </VStack>
-
         </NativeBaseProvider>
     );
 }
