@@ -2,10 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Center, IconButton, VStack, NativeBaseProvider, Text, Button, HStack} from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import {StyleSheet, Image, View} from "react-native";
-import LottieView from "lottie-react-native";
 import {getCurrUserId, getDataFromDatabase, saveToDatabase} from "../../firebase/FirebaseAPI";
 import DialogBox from "../../components/ui/DialogBox";
-import {getLocalData, storeLocalData} from "../../components/persistence/AsyncStorageAPIs";
 
 const SingleWorkout = (props) => {
 
@@ -93,7 +91,8 @@ const SingleWorkout = (props) => {
             // save the updated workout history
             saveToDatabase(userPath, user);
             setOpenDialog(false)
-            props.navigation.navigate("BottomTabNavScreens");
+            props.navigation.navigate("WorkoutSummary", {workoutDuration: totalWorkoutTime,
+                                                            caloriesBurned: Math.round(caloriesBurned) });
 
         })
 
