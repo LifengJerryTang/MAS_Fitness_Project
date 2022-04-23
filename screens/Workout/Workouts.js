@@ -1,76 +1,47 @@
-import {VStack, Center, NativeBaseProvider, ScrollView, Text, Box, StatusBar, Button} from "native-base";
-import {Platform, TouchableOpacity} from 'react-native';
-import Card from '../../components/ui/Card'
-import {getCurrUserId, getDataFromDatabase, saveToDatabase} from "../../firebase/FirebaseAPI";
+import {VStack, Center, NativeBaseProvider, Select, Text, Box, StatusBar, Button} from "native-base";
+import {StyleSheet} from 'react-native';
+import {getDataFromDatabase} from "../../firebase/FirebaseAPI";
 import Header from "../../components/ui/Header";
 import React, {useState, useEffect, useRef} from 'react';
-import * as Notifications from "expo-notifications";
-import * as Device from "expo-device";
 
 
 const WorkoutList = (props) => {
 
-    const goToWorkout = (workout) => {
-        props.navigation.navigate('SingleWorkout', {workout})
+    const goToWorkout = () => {
+        const workoutObject = props.workouts.filter((theWorkout) => theWorkout.name === workout)[0];
+        console.log(workoutObject)
+        props.navigation.navigate('SingleWorkout', {workoutObject})
     }
 
+    const [workout, setWorkout] = useState("");
+
     return (
-        <VStack
-            flex={1}
-            _light={{
-                bg: "white",
-            }}
-            _dark={{
-                bg: "customGray",
-            }}
-        >
-            <Box
-                px={{
-                    base: "4",
-                    md: "8",
-                }}
-                pt={{
-                    base: "4",
-                    md: "3",
-                }}
-                pb={{
-                    base: "5",
-                    md: "3",
-                }}
-                borderBottomWidth={{
-                    md: "1",
-                }}
-                _dark={{
-                    bg: "coolGray.900",
-                    borderColor: "coolGray.700",
-                }}
-                _light={{
-                    bg: {
-                        base: "primary.900",
-                        md: "white",
-                    },
-                    borderColor: "coolGray.200",
-                }}
-            >
-                <Header title={"Workouts"}/>
+        <VStack space={100} marginTop={100}>
+            <Center>
+                <Select
+                    placeholder="Please choose an workout!"
+                    selectedValue={workout}
+                    width={300}
+                    onValueChange={(item) => setWorkout(item)}
+                >
+                    {
+                        props.workouts.map((exercise) => {
+                            return (
+                                <Select.Item label={exercise.name} value={exercise.name} />
+                            )
+                        })
+                    }
+                </Select>
+            </Center>
 
-            </Box>
-            <ScrollView mt={5}>
-                <VStack space={4} alignItems="center">
-                    {props.workouts.map((workout) => {
-                        return <TouchableOpacity key={workout.name}
-                                                 onPress={() => goToWorkout(workout)}
-                        >
-                            <Card
-                                imageUrl={workout.imageUrl}
-                                title={workout.name}
-                                description={workout.description}/>
-                        </TouchableOpacity>
-
-                    })}
-                </VStack>
-            </ScrollView>
+            <Button
+                onPress={() => goToWorkout()}
+                title="Start workout"
+                style={styles.ButtonContainer}>
+                <Text style={styles.ButtonText}>{"Start workout"}</Text>
+            </Button>
         </VStack>
+
     );
 }
 
@@ -102,9 +73,74 @@ const Workouts = (props) => {
                     bg: "coolGray.900",
                 }}
             />
-            <WorkoutList workouts={workouts} navigation={props.navigation}/>
+            <VStack
+                flex={1}
+                _light={{
+                    bg: "white",
+                }}
+                _dark={{
+                    bg: "customGray",
+                }}
+            >
+                <Box
+                    px={{
+                        base: "4",
+                        md: "8",
+                    }}
+                    pt={{
+                        base: "4",
+                        md: "3",
+                    }}
+                    pb={{
+                        base: "5",
+                        md: "3",
+                    }}
+                    borderBottomWidth={{
+                        md: "1",
+                    }}
+                    _dark={{
+                        bg: "coolGray.900",
+                        borderColor: "coolGray.700",
+                    }}
+                    _light={{
+                        bg: {
+                            base: "primary.900",
+                            md: "white",
+                        },
+                        borderColor: "coolGray.200",
+                    }}
+                >
+                    <Header title={"Workouts"}/>
+
+                </Box>
+                <Text fontSize={"2xl"} textAlign={"center"} bold color={"primary.600"}
+                    marginTop={10}>
+                    Hello. Please choose an workout
+                </Text>
+                <WorkoutList workouts={workouts} navigation={props.navigation}/>
+            </VStack>
         </NativeBaseProvider>
     );
 }
+
+const styles = StyleSheet.create({
+    // ...
+    ButtonContainer: {
+      elevation: 30,
+      backgroundColor: "#009688",
+      borderRadius: 10,
+      paddingVertical: 30,
+      paddingHorizontal: 12,
+        marginHorizontal: 55,
+    },
+
+    ButtonText: {
+      fontSize: 18,
+      color: "#fff",
+      fontWeight: "bold",
+      alignSelf: "center",
+      textTransform: "uppercase"
+    }
+  });
 
 export default Workouts;
