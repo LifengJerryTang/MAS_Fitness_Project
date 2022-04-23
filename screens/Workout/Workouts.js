@@ -1,5 +1,6 @@
 import {VStack, Center, NativeBaseProvider, ScrollView, Text, Box, StatusBar, Button} from "native-base";
-import {Platform, TouchableOpacity} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import {Platform, TouchableOpacity, StyleSheet} from 'react-native';
 import Card from '../../components/ui/Card'
 import {getDataFromDatabase} from "../../firebase/FirebaseAPI";
 import Header from "../../components/ui/Header";
@@ -12,6 +13,37 @@ const WorkoutList = (props) => {
         props.navigation.navigate('SingleWorkout', {workout})
     }
 
+     const [workout, setWorkout] = useState([]);
+
+
+    return (
+        <NativeBaseProvider>
+            <Picker
+            selectedValue={workout}
+            style={{ height: 50, width: 390 }}
+            onValueChange={(itemValue, itemIndex) => 
+                setWorkout(itemValue)
+            }>
+            <Picker.Item label="Push ups" value="pushup" />
+            <Picker.Item label="Sit ups" value="situp" />
+            </Picker>
+            <Button
+                onPress={() => goToWorkout(workout)}
+                title="Start workout"
+                style={styles.ButtonContainer}>
+                <Text style={styles.ButtonText}>{"Start workout"}</Text>
+            </Button>
+        </NativeBaseProvider>
+        
+
+        
+
+
+        
+
+    );
+    
+/*
     return (
         <VStack
             flex={1}
@@ -69,7 +101,7 @@ const WorkoutList = (props) => {
                 </VStack>
             </ScrollView>
         </VStack>
-    );
+    );*/
 }
 
 const Workouts = (props) => {
@@ -104,5 +136,28 @@ const Workouts = (props) => {
         </NativeBaseProvider>
     );
 }
+
+const styles = StyleSheet.create({
+    // ...
+    ButtonContainer: {
+      elevation: 30,
+      backgroundColor: "#009688",
+      borderRadius: 10,
+      paddingVertical: 30,
+      paddingHorizontal: 12,
+      position: 'absolute',
+      bottom: 100,
+      left: 100
+      
+
+    },
+    ButtonText: {
+      fontSize: 18,
+      color: "#fff",
+      fontWeight: "bold",
+      alignSelf: "center",
+      textTransform: "uppercase"
+    }
+  });
 
 export default Workouts;
