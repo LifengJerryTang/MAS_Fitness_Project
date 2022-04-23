@@ -10,9 +10,9 @@ import {getLocalData, storeLocalData} from "../../components/persistence/AsyncSt
 const SingleWorkout = (props) => {
 
 
-    const [workoutName] = useState(props.route.params.workout.name);
-    const [workoutGif] = useState(props.route.params.workout.gif);
-    const [workoutMET] = useState(props.route.params.workout.MET);
+    const [workoutName] = useState(props.route.params.workoutObject.name);
+    const [workoutGif] = useState(props.route.params.workoutObject.gif);
+    const [workoutMET] = useState(props.route.params.workoutObject.MET);
 
     const [time, setTime] = useState({sec:0, min:0, hour:0});
     const [interv, setInterv] = useState(0);
