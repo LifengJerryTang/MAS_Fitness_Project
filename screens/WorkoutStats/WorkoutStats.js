@@ -81,9 +81,7 @@ const WorkoutStats = () => {
                 .toISOString().split('T')[0];
 
             if (caloriesBurnedByWeeks.hasOwnProperty(monday)) {
-                console.log(workoutHistory[date])
                 for (let historyData of workoutHistory[date]) {
-                    console.log( workoutHistory[date])
                     caloriesBurnedByWeeks[monday] += historyData.caloriesBurned;
                 }
             }
@@ -230,7 +228,6 @@ const WorkoutStats = () => {
                         values={['By Days', 'By Weeks']}
                         value={dataView}
                         onSelect={val => {
-                            console.log(val)
                             setDataView(val);
                             if (val === "By Weeks") {
                                 fillFrequencyDataByWeeks(workoutHistoryData);
